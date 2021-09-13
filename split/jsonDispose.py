@@ -51,11 +51,7 @@ def get():
                 print(a, b)
                 # 判断标注是否在截取地址内，只拿在地址内的所有标注
                 if x < a and a < x1 and y < b and b < y1:
-                    # 修改标注后截取位置
-                    xy[0][0] = a - x
-                    xy[0][1] = b - y
-                    xy[1][0] = xy[1][0] - x
-                    xy[1][1] = xy[1][1] - y
+
                     print(xy)
                     shapes.append(i)
         print(shapes)

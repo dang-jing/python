@@ -7,22 +7,31 @@ import time
 import uuid
 import os
 import urllib.request
+from faker import Factory
+import random
+import re
 
-a = "初三数学题"
-start_a, finish = 1, 500
+a = "二元一次方程组"
+start_a, finish = 1, 10
 
 
 def start(query, begin, end):
     # 记录爬取图片源地址的文本
     txtPath = "D:\\图片\\测试.txt"
     # 本地下载图片地址
-    urlPath = "D:\\图片\\手写\\初三数学题\\"
+    urlPath = "D:\\测试\\中考\\imgs\\二元一次方程组\\"
     total = 0
     for i in range(begin, end + 1):
+
         print("第", i, "页-----------------------还剩", end - i)
-        page = dec2hex(i)
-        url = "https://m.baidu.com/sf/vsearch/image/search/wisesearchresult?tn=wisejsonala&ie=utf-8&fromsf=1" \
-              "&word="+query+"&pn=30&rn=30&gsm=&prefresh=undefined&fp=result&searchtype=0&fromfilter=0&tpltype=0"
+        j = i*30
+        page = dec2hex(j)
+        url = "http://image.baidu.com/search/acjson?tn=resultjson_com&logid=6650215631444446200&ipn=rj&ct=201326592" \
+              "&is=&fp=result&queryWord=" + query + "&cl=2&lm=-1" \
+                                                    "&ie=utf-8&oe=utf-8&adpicid=&st=&z=&ic=&hd=&latest=&copyright=" \
+                                                    "&word=" + query + "&s=&se=&tab=&width=&height=" \
+                                                                       "&face=&istype=&qc=&nc=1&fr=&expermode=&nojc=&pn="+str(j)+"&rn=30&gsm=" + page + "&1626508879965="
+        print(url)
         urlPaths = parsing_URL(url)
         # print(urlPaths)
         for i in urlPaths:
@@ -54,14 +63,22 @@ def dec2hex(string_num):
 # 解析网页返回内容，拿到指定键的所有内容
 def parsing_URL(url):
     # 设置请求头，默认为python，防止被拦截
+    random.randint(0, 2) + random.random()
+    #   随机更改请求头
+    fc = Factory.create()
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"
+        # "User-Agent": "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.67"
+        # "User-Agent": fc.user_agent()
+        'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
+        'Connection': 'keep-alive',
+        'User-Agent': fc.user_agent(),
+        'Upgrade-Insecure-Requests': '1'
     }
     # 获取网页信息，verify关闭ssl校验
     response = requests.get(url=url, headers=headers, verify=False)
     # 拿到请求页面发布会的所有内容
     jsonobj = json.loads(response.text)
-    imgPaths = jsonobj['linkData']
+    imgPaths = jsonobj['data']
     # print(imgPaths)
     imgList = []
     a = 0
@@ -70,7 +87,7 @@ def parsing_URL(url):
         # print(imgPath)
         if imgPath == {}:
             break
-        imgList.append(imgPath['hoverUrl'])
+        imgList.append(imgPath['thumbURL'])
         a += 1
     return imgList
 
@@ -115,3 +132,21 @@ def url_picture(image_url, file_path):
 
 
 start(a, start_a, finish)
+'''if __name__ == '__main__':
+    fc = Factory.create()
+    headers = {
+        'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
+        'Connection': 'keep-alive',
+        'User-Agent': fc.user_agent(),
+        'Upgrade-Insecure-Requests': '1'
+    }
+
+    A = requests.Session()
+    A.headers = headers
+    Result = A.get(
+        'https://image.baidu.com/search/acjson?tn=resultjson_com&logid=7254038348844683383&ipn=rj&ct=201326592&is=&fp=result&queryWord=%E4%BA%8C%E5%85%83%E4%B8%80%E6%AC%A1%E6%96%B9%E7%A8%8B%E7%BB%84&cl=2&lm=-1&ie=utf-8&oe=utf-8&adpicid=&st=-1&z=&ic=&hd=&latest=&copyright=&word=%E4%BA%8C%E5%85%83%E4%B8%80%E6%AC%A1%E6%96%B9%E7%A8%8B%E7%BB%84&s=&se=&tab=&width=&height=&face=0&istype=2&qc=&nc=1&fr=&expermode=&nojc=&rn=30&gsm=1e&1626509680746=',
+        timeout=7, allow_redirects=False)
+    result = Result.text
+    pic_url = re.findall('"objURL":"(.*?)",', result, re.S)  # 先利用正则表达式找到图片url
+    print(Result.text)
+    print(Result.headers)'''

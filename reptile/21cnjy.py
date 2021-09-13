@@ -9,14 +9,14 @@ import time
 import json
 from PIL import Image
 
-URL = 'https://www.21cnjy.com/3/79601_7/'
-file_path = 'D:\\测试\\中考\\imgs\\21cnjy\\'
+URL = 'https://www.21cnjy.com/3/20152_7/'
+file_path = 'C:\\Users\\dangc\\Desktop\\a\\111\\'
 txtPath = r'D:\测试\中考\21cnjy.txt'
-json_path = 'D:\\测试\\中考\\img_json\\21cnjy\\'
-start, finish = 1, 50
+json_path = 'C:\\Users\\dangc\\Desktop\\a\\111\\'
+start, finish = 1, 2
 province = ['内蒙古', '北京', '天津', '上海', '重庆', '广西', '宁夏', '新疆', '西藏', '香港', '澳门', '河北', '山西', '辽宁', '吉林', '黑龙江', '江苏',
             '浙江', '安徽', '福建', '江西', '山东', '台湾', '河南', '湖北', '湖南', '广东', '海南', '四川', '贵州', '云南', '陕西', '甘肃', '青海']
-
+pp = []
 
 class TwoOnecnjy():
 
@@ -41,6 +41,7 @@ class TwoOnecnjy():
                 print(titles)'''
                 for i in range(2, len(hrefs)):
                     print(titles[i], hrefs[i], "----------------", i + 1, '/', len(titles))
+
                     self.set_json(titles[i])
                     self.img_webPage(hrefs[i])
             else:

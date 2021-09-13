@@ -8,23 +8,22 @@ import base64
 import os
 
 # 读取json地址
-jsonPath = "C:\\Users\\dangc\\Desktop\\a\\a\\"
+jsonPath = "C:\\Users\\dangc\\Desktop\\a\\single\\json\\"
 # 写入子json地址
-sonjsonpath = 'C:\\Users\\dangc\\Desktop\\a\\c\\'
+sonjsonpath = 'C:\\Users\\dangc\\Desktop\\a\\single\\newjson\\'
 #  需要截取的table
-value = '题目'
+value = 's'
 # 原图地址
-imgpath = "C:\\Users\\dangc\\Desktop\\a\\b\\"
+imgpath = "C:\\Users\\dangc\\Desktop\\a\\single\\img\\"
 # 截取图片存放地址
-splitimg = 'C:\\Users\\dangc\\Desktop\\a\\c\\'
+splitimg = 'C:\\Users\\dangc\\Desktop\\a\\single\\newimg\\'
 
 
 class splitLabel(object):
     def __init__(self, json_Name):
         # 拿到当前文件名
         self.name = json_Name
-        self.img_name = self.name + '.png'
-        print(self.name)
+        self.img_name = self.name + '.jpg'
         self.start()
 
     def start(self):
@@ -79,7 +78,9 @@ class splitLabel(object):
 
     # 将图片转换成base64
     def base(self):
-        f = open(self.son_imgname, 'rb')
+        a=self.iii
+        print(a)
+        f = open(a, 'rb')
         byteC = base64.b64encode(f.read())
         # 将base64解码成字符串
         return byteC.decode('utf-8')
@@ -110,7 +111,7 @@ class splitLabel(object):
         if ROI.size != 0:
             str = splitimg + self.name + ".jpg"
             cv2.imencode('.jpg', ROI)[1].tofile(str)
-            self.son_imgname = str
+            self.iii = str
 
     # 拿到所有要切分的位置
     def isValue(self):
@@ -142,9 +143,9 @@ json_Name = os.listdir(jsonPath)
 for name in json_Name:
     if 'json' in name:
         split___ = str(name).split(".")[0]
-        print(split___)
-        if os.path.exists(imgpath + split___ + '.png'):
+        if os.path.exists(imgpath + split___ + '.jpg'):
             splitLabel(split___)
+#splitLabel('24036ef50d904727990ef2629f5cb6f7')
 
 # splitLabel("image1.png")
 #print(os.path.exists(r"C:\Users\dangc\Desktop\a\a\0a28d2ca-c59e-11eb-8206-9c2976e90c22.json"))
